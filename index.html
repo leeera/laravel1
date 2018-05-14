@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+
+<body>
+       <nav> <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a> </nav>
+		<div class="input-field col s6">
+      <input id="inp_search" type="text" class="validate inp_s">
+    </div>
+    
+		
+  <ul id="slide-out" class="sidenav">
+   <li><a href="index.html">Главная</a></li>
+    <li><a href="lost.html">Потеряно</a></li>
+    <li><a href="found.html">Найдено</a></li>
+	  <li><a href="index1.html" class="waves-effect waves-light btn">добавить запись</a></li>
+  </ul>
+  
+       
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+	<script>
+		var inp=document.querySelector(".inp_s");
+		var card_r=document.createElement("div");
+		document.body.appendChild(card_r);
+		var card_r2=document.createElement("div");
+		document.body.appendChild(card_r2);
+		inp.oninput=function(){
+			var inp_v=document.getElementById('inp_search').innerHTML = inp.value;
+			$.ajax({
+				type:'get',
+				url: "http://127.0.0.1:8000/search",
+				data:{
+					value:inp_v,
+				},
+				success: function(data) {
+					console.log(data);
+					card_r.innerHTML='';
+					card_r2.innerHTML='';
+					for(var i=0; i<data.length; i++){
+						
+						var div_row=document.createElement("div");
+						card_r2.appendChild(div_row);
+						div_row.classList.add('row');
+						
+						var div_col=document.createElement('div');
+						div_row.appendChild(div_col);
+						div_col.className='col s12 m6';
+						
+						var div_card=document.createElement('div');
+						div_col.appendChild(div_card);
+					   	div_card.className='card blue-grey darken-1';
+						
+						var div_cardcon=document.createElement('div');
+						div_card.appendChild(div_cardcon);
+						div_cardcon.className='card-content white-text';
+						
+						var span_card=document.createElement('span');
+						div_cardcon.appendChild(span_card);
+						span_card.className='card-title';
+						span_card.innerHTML=data[i].title;
+						
+						var p_desc=document.createElement('p');
+						div_cardcon.appendChild(p_desc);
+						p_desc.innerHTML=data[i].description;
+						
+						var p_cont=document.createElement('p');
+						div_cardcon.appendChild(p_cont);
+						p_cont.innerHTML=data[i].contact;
+					}
+			}
+			});	
+		};
+		$(document).ready(function() {		
+			$('.sidenav').sidenav();
+  			$('input#input_text, textarea#textarea2').characterCounter();
+			$.ajax({
+				url: "http://127.0.0.1:8000/ajax",
+				success: function(data) {
+					for(var i=0; i<data.length; i++){
+						
+						
+						var div_row=document.createElement("div");
+						card_r.appendChild(div_row);
+						div_row.classList.add('row');
+						
+						var div_col=document.createElement('div');
+						div_row.appendChild(div_col);
+						div_col.className='col s12 m6';
+						
+						var div_card=document.createElement('div');
+						div_col.appendChild(div_card);
+					   	div_card.className='card blue-grey darken-1';
+						
+						var div_cardcon=document.createElement('div');
+						div_card.appendChild(div_cardcon);
+						div_cardcon.className='card-content white-text';
+						
+						var span_card=document.createElement('span');
+						div_cardcon.appendChild(span_card);
+						span_card.className='card-title';
+						span_card.innerHTML=data[i].title;
+						
+						var p_desc=document.createElement('p');
+						div_cardcon.appendChild(p_desc);
+						p_desc.innerHTML=data[i].description;
+						
+						var p_cont=document.createElement('p');
+						div_cardcon.appendChild(p_cont);
+						p_cont.innerHTML=data[i].contact;
+					}
+				}
+			});
+		});
+		
+	</script>
+</body>
+
+</html>
